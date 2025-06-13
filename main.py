@@ -63,7 +63,7 @@ class StudyDamagochi:
         
     #시간 측정
         
-    def 공부시작(self): # 여러번 누르면 왜 누적되내
+    def 공부시작(self):
         if not self.playing and not self.stoping:   # 타이머가 실행중이 아닐 때만 시작
             self.playing = True
             self.타이머업데이트()
@@ -71,15 +71,17 @@ class StudyDamagochi:
         self.playing = False
         self.sec = 0
         self.timer.config(text="00:00")
+        self.playing = False
+        self.stoping = False
 
     def 일시정지(self):
         self.playing = False
         self.stoping = True
 
     def 계속(self):
-        if not self.playing:
-            self.playing = True
+        if not self.playing and self.stoping:
             self.stoping = False
+            self.playing = True
             self.타이머업데이트()
 
     def 타이머업데이트(self):
@@ -94,4 +96,3 @@ if __name__ == '__main__':
     root = Tk()
     app = StudyDamagochi(root)
     root.mainloop()
-print('hello')
