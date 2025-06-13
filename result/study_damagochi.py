@@ -1,17 +1,25 @@
+
+
 # 메인 페이지 틀
 
 from tkinter import *
-from PIL import Image, ImageTk 
+from PIL import Image, ImageTk
+import os
 
 
 class StudyDamagochi:
     def __init__(self, win):
+        
+        self.win = win
+        self.sec = 0
+        self.playing = False
+        self.stoping = False
+        
         # 창 생성 및 설정
         win.geometry("770x760")
         win.title("오늘은 공부를 했나요?")
         win.configure(background="white")
-
-
+        
         # 메세지 나타내기, 설정
         self.message = Label(width=30, height=1, text='오늘은 공부를 했나요?', font=('BM Jua',40), background='white', foreground='black') # 더 얇은 버전을 원해... 글씨체
         self.message.grid(row=0, column=0, columnspan=2, pady=20)
@@ -22,7 +30,7 @@ class StudyDamagochi:
 
 
         #동물 그림 설정
-        img = Image.open("/Users/ttalgi/Documents/study/교과목/수행평가/파이썬/GUItk/image/egg.png")
+        img = Image.open("/Users/ttalgi/Documents/study/교과목/수행평가/파이썬/studyDamagochi/image/egg.png")
         img = img.resize((200, 200))
         self.photo = ImageTk.PhotoImage(img)
 
@@ -38,15 +46,15 @@ class StudyDamagochi:
 
 
         # 공부시간 나타내기
-        self.timer = Label(win, width=10, height=1, text='23:43', font=('BM Jua',80, 'normal'), background='white', foreground='red')
+        self.timer = Label(win, width=10, height=1, text='00:00', font=('BM Jua',80, 'normal'), background='white', foreground='red')
         self.timer.grid(row=4, column=0, columnspan=2, pady=20)
 
 
         # 버튼 생성
-        self.bstart = Button(win, width=13, height=2, text="공부시작", font=('BM Jua', 30), activebackground="yellow", highlightthickness=2, highlightbackground='yellow')
-        self.bend = Button(win, width=13, height=2, text="공부종료", font=('BM Jua', 30), activebackground="yellow", highlightthickness=2, highlightbackground='yellow')
-        self.bstop = Button(win, width=13, height=2, text="일시정지", font=('BM Jua', 30), activebackground="yellow", highlightthickness=2, highlightbackground='yellow')
-        self.breplay = Button(win, width=13, height=2, text="계속", font=('BM Jua', 30), activebackground="yellow", highlightthickness=2, highlightbackground='yellow')
+        self.bstart = Button(win, width=13, height=2, text="공부 시작", font=('BM Jua', 30), activebackground="yellow", highlightthickness=2, highlightbackground='yellow', command=self.공부시작)
+        self.bend = Button(win, width=13, height=2, text="공부종료", font=('BM Jua', 30), activebackground="yellow", highlightthickness=2, highlightbackground='yellow', command=self.공부종료)
+        self.bstop = Button(win, width=13, height=2, text="일시정지", font=('BM Jua', 30), activebackground="yellow", highlightthickness=2, highlightbackground='yellow', command=self.일시정지)
+        self.breplay = Button(win, width=13, height=2, text="계속", font=('BM Jua', 30), activebackground="yellow", highlightthickness=2, highlightbackground='yellow', command=self.계속)
 
 
         #버튼 나타내기
@@ -54,3 +62,37 @@ class StudyDamagochi:
         self.bend.grid(row=5, column=1, padx=10, pady=10)
         self.bstop.grid(row=6, column=0, padx=10, pady=10)
         self.breplay.grid(row=6, column=1, padx=10, pady=10)
+        
+    #시간 측정
+        
+    def 공부시작(self): # 여러번 누르면 왜 누적되내
+        if not self.playing and not self.stoping:   # 타이머가 실행중이 아닐 때만 시작
+            self.playing = True
+            self.타이머업데이트()
+    def 공부종료(self):
+        self.playing = False
+        self.sec = 0
+        self.timer.config(text="00:00")
+
+    def 일시정지(self):
+        self.playing = False
+        self.stoping = True
+
+    def 계속(self):
+        if not self.playing:
+            self.playing = True
+            self.stoping = False
+            self.타이머업데이트()
+
+    def 타이머업데이트(self):
+        if self.playing:
+            self.sec += 1
+            minutes = self.sec // 60
+            seconds = self.sec % 60
+            self.timer.config(text=f"{minutes:02}:{seconds:02}")
+            self.win.after(1000, self.타이머업데이트)
+
+if __name__ == '__main__':
+    root = Tk()
+    app = StudyDamagochi(root)
+    root.mainloop()
