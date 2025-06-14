@@ -14,7 +14,7 @@ class StudyDamagochiFrame():
         self.win = win
         
         # 창 생성 및 설정
-        win.geometry("770x760")
+        win.geometry("770x780")
         win.title("오늘은 공부를 했나요?")
         win.configure(background="white")
         

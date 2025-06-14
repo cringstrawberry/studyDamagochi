@@ -9,7 +9,13 @@ if __name__== "__main__":
     win=Tk()
     app = StudyDamagochiFrame(win)
     logic = RunButton(app)
-    animal = MakeAnimal()
+    app = MakeAnimal()
+
+    open_button = Button(win, text="새로운 친구 만나기", command=lambda: app.aniset(win), width=13,height=3)
+    open_button.grid()
+
+
+    saver = SaveFile(app)
     win.mainloop()
 
 
