@@ -9,10 +9,10 @@ if __name__== "__main__":
     win=Tk()
     app = StudyDamagochiFrame(win)
     logic = RunButton(app)
-    app = MakeAnimal()
+    real = MakeAnimal(win)
 
-    open_button = Button(win, text="새로운 친구 만나기", command=lambda: app.aniset(win), width=13,height=3)
-    open_button.grid()
+    open_button = Button(win, text="새로운 친구 만나기", command=lambda: real.aniset(win), width=10,height=2)
+    open_button.grid(row=7 , column=0, columnspan=2)
 
 
     saver = SaveFile(app)
