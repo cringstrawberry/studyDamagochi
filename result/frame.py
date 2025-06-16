@@ -36,7 +36,7 @@ class StudyDamagochiFrame():
         self.photo = ImageTk.PhotoImage(img)
 
 
-        # 동물 그림 나타내기
+        # 동물 그림 나타내기g
         self.label = Label(win, image=self.photo, bd=0, background="white")
         self.label.grid(row=1, column=0, columnspan=2, pady=30)
 
