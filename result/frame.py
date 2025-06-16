@@ -31,7 +31,7 @@ class StudyDamagochiFrame():
 
 
         #동물 그림 설정
-        img = Image.open("/Users/ttalgi/Documents/study/교과목/수행평가/파이썬/studyDamagochi/image/egg.png")
+        img = Image.open("egg.jpg")
         img = img.resize((200, 200))
         self.photo = ImageTk.PhotoImage(img)
 
