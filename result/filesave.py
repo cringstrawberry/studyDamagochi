@@ -14,10 +14,10 @@ class SaveFile:
         # Entry 위젯은 MakeAnimal 쪽에 있으므로, 그걸 참조해서 get()
         with open("animal.txt", "w", encoding="utf-8") as f:
             f.write("{")
-            f.write(aniname + ",\n") 
-            f.write(password + ",\n")
-            f.write(level + ",\n")
-            f.write(경험치 + ",\n")
+            f.write(str(aniname) + ",\n") 
+            f.write(str(password) + ",\n")
+            f.write(str(level) + ",\n")
+            f.write(str(경험치) + ",\n")
             f.write("}")
 
     def 로그인정보불러오기(self, aniname, password):
