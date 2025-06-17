@@ -1,6 +1,8 @@
+# 레벨업
+
 from tkinter import *
 from frame import StudyDamagochiFrame
-from makeanimal import MakeAnimal
+from studyDamagochi.result.setanimal import MakeAnimal
 
 class LevleUp(StudyDamagochiFrame, MakeAnimal):
     def exper(self):

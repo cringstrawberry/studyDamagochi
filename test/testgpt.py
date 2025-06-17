@@ -10,8 +10,7 @@ class StudyTimerApp:
         master.geometry("600x700") # 창 크기
         master.configure(background="white")
 
-        # --- 이미지 파일 경로 설정 ---
-        # 현재 스크립트 파일이 있는 디렉토리를 기준으로 'image' 폴더를 찾습니다.
+
         current_dir = os.path.dirname(__file__)
         self.egg_image_path = os.path.join(current_dir, "image", "egg.png")
         self.yellow_button_image_path = os.path.join(current_dir, "image", "button_yellow.png")

@@ -1,99 +1,126 @@
-# makeanimal.py 파일 내용 (이 코드로 완전히 바꿔주세요!)
 
 from tkinter import *
 from filesave import SaveFile 
-# StudyDamagochiFrame을 직접 상속받지 않습니다.
-# from frame import StudyDamagochiFrame # 이 줄은 필요 없지만, 필요시 참조만 함
+from PIL import Image, ImageTk
+import os
 
-class MakeAnimal: # 더 이상 StudyDamagochiFrame을 상속받지 않습니다.
-    # __init__ 메서드는 self 외에 두 개의 인자(main_win, study_damagochi_frame_instance)를 받아야 합니다.
+try:
+    from tkinter import messagebox
+except ImportError:
+    import tkMessageBox as messagebox
+
+
+
+class MakeAnimal: 
     def __init__(self, main_win, study_damagochi_frame_instance): 
         self.main_win = main_win # 메인 Tk 윈도우 인스턴스
-        # StudyDamagochiFrame 인스턴스를 저장하여 메인 프레임의 메서드를 호출할 수 있게 합니다.
+
         self.study_damagochi_frame = study_damagochi_frame_instance 
 
-        self.aniname_entry = None # Entry 위젯을 참조할 변수 초기화 (나중에 할당됨)
-        self.password_entry = None # Entry 위젯을 참조할 변수 초기화 (나중에 할당됨)
+        self.aniname_entry = None
+        self.password_entry = None
         
         self.saver = SaveFile()
         self.aniset_open = False
         self.로그인_open = False
+        self.계정삭제창_open = False
 
     def aniset(self, create_win):
-        if not self.aniset_open and not self.로그인_open:
-            self.win = Toplevel(create_win)
-            self.win.title("나만의 펫 만들기")
-            self.win.geometry("600x600")
-            self.win.configure(bg="white")
+        if not self.aniset_open and not self.로그인_open and not self.계정삭제창_open:
+            self.anisetwin = Toplevel(create_win)
+            self.anisetwin.title("나만의 펫 만들기")
+            self.anisetwin.geometry("600x600")
+            self.anisetwin.configure(bg="white")
 
-            Label(self.win, text="동물 이름").pack()
-            # Entry 위젯을 self.aniname_entry에 할당하여 나중에 값을 가져올 수 있게 합니다.
-            self.aniname_entry = Entry(self.win) 
+            Label(self.anisetwin, text="동물 이름", bg='white',fg='black',font=('BM Jua', 20)).pack()
+            self.aniname_entry = Entry(self.anisetwin) 
             self.aniname_entry.pack()
 
-            Label(self.win, text="비밀번호").pack()
-            # Entry 위젯을 self.password_entry에 할당하여 나중에 값을 가져올 수 있게 합니다.
-            self.password_entry = Entry(self.win, show="*") 
+            Label(self.anisetwin, text="비밀번호", bg='white',fg='black',font=('BM Jua', 20)).pack()
+            self.password_entry = Entry(self.anisetwin, show="*") 
             self.password_entry.pack()
 
             Button(
-                self.win, text="만들기",
-                command=self.create_character
-            ).pack(pady=10)
+                self.anisetwin, text="만들기",
+                command=self.create_character,
+                bg='white', fg='black', font=('BM Jua', 20), width=11
+            ).pack(pady=20)
 
             Button(
-                self.win, text="동물이 있으신가요?",
-                command=self.로그인
+                self.anisetwin, text="동물이 있으신가요?",
+                command=self.로그인,
+                bg='white', fg='black', font=('BM Jua', 20)
             ).pack()
 
             self.aniset_open = True
+        else:
+            self.on_aniset_close() #True일 때, 창닫기
+
+    def on_aniset_close(self):
+        self.aniset_open = False
+        # if hasattr(self, 'anisetwin') and self.anisetwin.winfo_exists(): # anisetwin이 존재하는지 확인
+        self.anisetwin.destroy()
+
 
     def create_character(self):
         # Entry 위젯에서 값을 가져올 때는 .get() 메서드를 사용합니다.
         name = self.aniname_entry.get() 
-        pw = self.password_entry.get()   
+        pw = self.password_entry.get()
+        user = self.saver.특정불러오기(name)
         if name and pw: # 이름과 비밀번호가 모두 입력되었는지 확인
-            self.saver.tray(name, pw, 1, 0)  # 파일 저장 (이름, 비밀번호, 레벨 1, 경험치 0)
-            self.win.destroy() # 현재 Toplevel 창 닫기
-            self.aniset_open = False
-            # StudyDamagochiFrame의 메서드를 호출하여 메인 화면의 라벨을 업데이트
-            self.study_damagochi_frame.update_character_display(name, 1, 0)
+            if user is None:
+                self.saver.tray(name, pw, level=1, exp=0)  # 파일 저장 (이름, 비밀번호, 레벨 1, 경험치 0)
+                self.anisetwin.destroy() # 현재 Toplevel 창 닫기
+                self.aniset_open = False
+                # StudyDamagochiFrame의 메서드를 호출하여 메인 화면의 라벨을 업데이트
+                self.study_damagochi_frame.update_character_display(name, 1, 0)
+            else:
+                messagebox.showerror("중복오류","이미 같은 이름의 동물 친구가 있어요.")
         else:
             # 사용자에게 입력 누락 메시지 표시 (필요시 라벨 사용)
-            messagebox.showerror("입력 오류", "이름과 비밀번호를 모두 입력해주세요.")
+            messagebox.showerror("입력오류","동물 친구의 이름과 비밀번호는 꼭 필요해요")
 
 
     def 로그인(self):  # 로그인 창 띄우기
         # 이전에 열린 Toplevel 창이 있다면 닫기
-        if hasattr(self, 'win') and self.win.winfo_exists():
-            self.win.destroy()
-        self.로그인_open = True
+        if self.aniset_open or self.로그인_open or self.계정삭제창_open:
+            self.loginwin = Toplevel() # 새로운 Toplevel 창 생성
+            self.loginwin.title("로그인")
+            self.loginwin.geometry("600x600")
+            self.loginwin.configure(bg="white")
 
-        self.win = Toplevel() # 새로운 Toplevel 창 생성
-        self.win.title("로그인")
-        self.win.geometry("600x600")
-        self.win.configure(bg="white")
+            Label(self.loginwin, text="동물 이름", bg='white',fg='black',font=('BM Jua', 20)).pack()
+            self.aniname_entry = Entry(self.loginwin) # Entry 위젯 재할당
+            self.aniname_entry.pack()
 
-        Label(self.win, text="동물 이름").pack()
-        self.aniname_entry = Entry(self.win) # Entry 위젯 재할당
-        self.aniname_entry.pack()
+            Label(self.loginwin, text="비밀번호", bg='white',fg='black',font=('BM Jua', 20)).pack()
+            self.password_entry = Entry(self.loginwin, show="*") # Entry 위젯 재할당
+            self.password_entry.pack()
 
-        Label(self.win, text="비밀번호").pack()
-        self.password_entry = Entry(self.win, show="*") # Entry 위젯 재할당
-        self.password_entry.pack()
+            Button(
+                self.loginwin, text="로그인",
+                command=self.로그인확인,
+                bg='black', fg='white', font=('BM Jua', 20), width=11
+            ).pack()
 
-        Button(
-            self.win, text="로그인",
-            command=self.로그인확인
-        ).pack()
+            self.로그인_open=True
+        else:
+            self.로그인_open=False
+            self.on_login_close()
+
+    def on_login_close(self):
+        self.로그인_open = False
+        if hasattr(self, 'loginwin') and self.loginwin.winfo_exists():
+            self.loginwin.destroy()
+
 
     def 로그인확인(self): # 파일에서 불러온 정보와 비교
         name = self.aniname_entry.get() # Entry 위젯에서 값 가져오기
         pw = self.password_entry.get() # Entry 위젯에서 값 가져오기
-        user = self.saver.불러오기()  # 저장된 정보 불러오기
+        user = self.saver.특정불러오기(name)  # 저장된 정보 불러오기
 
         if user and user["name"] == name and user["pw"] == pw:
-            self.win.destroy() # 현재 Toplevel 창 닫기
+            self.loginwin.destroy() # 현재 Toplevel 창 닫기
             self.로그인_open = False
             
             # 여기서 불러온 레벨과 경험치 값을 추출합니다.
@@ -105,15 +132,69 @@ class MakeAnimal: # 더 이상 StudyDamagochiFrame을 상속받지 않습니다.
             self.study_damagochi_frame.update_character_display(user["name"], loaded_level, loaded_exp) 
         else:
             # 로그인 실패 메시지 표시 (messagebox 사용 시 사용자에게 더 명확)
-            messagebox.showerror("로그인 실패", "로그인 실패. 이름 또는 비밀번호를 확인해주세요.")
+            messagebox.showerror("로그인오류","동물 친구의 이름과 비밀번호가 일치하지 않아요.")
 
-# messagebox를 사용하려면 tkinter 임포트 시 추가해야 합니다.
-# from tkinter import * # <-- 이 부분에 messagebox 추가
-try:
-    from tkinter import messagebox
-except ImportError:
-    # Python 2.x 호환성을 위해 (거의 사용되지 않지만)
-    import tkMessageBox as messagebox
+
+    def 계정삭제창(self, delate_win):
+        if not self.계정삭제창_open or not self.aniset_open or not self.로그인_open:
+            self.계정삭제창_open = True
+            self.win = Toplevel(delate_win)
+            self.win.title('친구랑 헤어지기')
+            self.win.geometry('600x600')
+            self.win.configure(bg='white')
+
+            img_path = "/Users/ttalgi/Documents/study/교과목/수행평가/파이썬/studyDamagochi/result/egg.jpg"
+
+            if os.path.exists(img_path):
+                img = Image.open(img_path)
+                img = img.resize((200, 200))
+                self.photo = ImageTk.PhotoImage(img)
+            else:
+                # 이미지가 없을 경우를 대비한 처리 (예: 빈 이미지 또는 에러 메시지)
+                print(f"에러: 해당 파일 못찾겠음 {img_path}")
+                self.photo = None # 또는 기본 제공되는 투명 이미지 등
+
+            # 사용자 잡기
+            dontgoaway=Label(self.win, text="정말.. 떠나실 건가요?", bg='white',fg='black', font=('BM Jua',20))
+            dontgoaway.grid(row=0,column=0,columnspan=2)
+
+            # 동물 그림 나타내기
+            self.label = Label(self.win, image=self.photo, bd=0, background="white")
+            self.label.grid(row=1,column=0,columnspan=2)
+
+            delateaniname= Label(self.win, text="동물 이름", bg="white", fg='black').pack()
+            delateaniname.gird(row=2,column=0,columnspan=2)
+            self.delate_aniname_entry = Entry(self.win)
+            self.delate_aniname_entry.grid(row=3,column=0,columnspan=2)
+
+            delatepassword = Label(self.win, text="비밀번호", bg="white", fg='black').pack()
+            delatepassword.grid(row=4,column=0,columnspan=2)
+            self.delate_password_entry = Entry(self.win, show="*")
+            self.delate_password_entry.grid(row=5,column=0,columnspan=2)
+
+            Button(
+                self.win, text="삭제하기",
+                command=self.계정삭제
+            ).pack()
+
+    def 계정삭제(self):
+        name = self.delate_aniname_entry.get()
+        pw = self.delate_password_entry.get()
+        user = self.saver.특정불러오기(name)
+
+        if user and user["name"] == name and user["pw"] == pw:
+            level = user.get("level", 1)
+            exp = user.get("경험치", 0)
+            self.saver.삭제하기(name,level,exp)  # 저장된 파일 삭제 메서드가 있어야 함
+            self.win.destroy()
+            self.계정삭제창_open = False
+            messagebox.showinfo("동물 친구와 헤어지게 되었습니다. 그동안 고마웠어요.")
+        else:
+            messagebox.showerror("동물 친구의 이름과 비밀번호가 맞지 않아요.")
+
+
+
+
 
 
 
@@ -270,8 +351,8 @@ except ImportError:
 #         login.grid(row=4, column=1, pady=10)
 
 
-        # self.로그인정보불러오기(self.aniname,self.password)
-        # self.update_character(self.aniname,)
+#         self.로그인정보불러오기(self.aniname,self.password)
+#         self.update_character(self.aniname,)
 
 
 
