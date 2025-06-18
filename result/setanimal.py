@@ -138,10 +138,10 @@ class MakeAnimal:
     def 계정삭제창(self, delate_win):
         if not self.계정삭제창_open or not self.aniset_open or not self.로그인_open:
             self.계정삭제창_open = True
-            self.win = Toplevel(delate_win)
-            self.win.title('친구랑 헤어지기')
-            self.win.geometry('600x600')
-            self.win.configure(bg='white')
+            self.delatewin = Toplevel(delate_win)
+            self.delatewin.title('친구랑 헤어지기')
+            self.delatewin.geometry('600x600')
+            self.delatewin.configure(bg='white')
 
             img_path = "/Users/ttalgi/Documents/study/교과목/수행평가/파이썬/studyDamagochi/result/egg.jpg"
 
@@ -155,21 +155,19 @@ class MakeAnimal:
                 self.photo = None # 또는 기본 제공되는 투명 이미지 등
 
             # 사용자 잡기
-            dontgoaway=Label(self.win, text="정말.. 떠나실 건가요?", bg='white',fg='black', font=('BM Jua',20))
-            dontgoaway.grid(row=0,column=0,columnspan=2)
+            dontgoaway=Label(self.delatewin, text="정말.. 떠나실 건가요?", bg='white',fg='black', font=('BM Jua',20))
+            dontgoaway.grid(row=0,column=0,columnspan=2,padx=20)
 
             # 동물 그림 나타내기
-            self.label = Label(self.win, image=self.photo, bd=0, background="white")
-            self.label.grid(row=1,column=0,columnspan=2)
+            delateanimal = Label(self.delatewin, image=self.photo, bd=0, background="white")
+            delateanimal.grid(row=1,column=0,columnspan=2,padx=20)
 
-            delateaniname= Label(self.win, text="동물 이름", bg="white", fg='black').pack()
-            delateaniname.gird(row=2,column=0,columnspan=2)
-            self.delate_aniname_entry = Entry(self.win)
+            delateaniname = Label(self.delatewin, text="동물 이름", bg="white", fg='black').grid(row=2,column=0,columnspan=2)
+            self.delate_aniname_entry = Entry(self.delatewin)
             self.delate_aniname_entry.grid(row=3,column=0,columnspan=2)
 
-            delatepassword = Label(self.win, text="비밀번호", bg="white", fg='black').pack()
-            delatepassword.grid(row=4,column=0,columnspan=2)
-            self.delate_password_entry = Entry(self.win, show="*")
+            delatepassword = Label(self.delatewin, text="비밀번호", bg="white", fg='black').grid(row=4,column=0,columnspan=2)
+            self.delate_password_entry = Entry(self.delatewin, show="*")
             self.delate_password_entry.grid(row=5,column=0,columnspan=2)
 
             Button(
@@ -186,7 +184,7 @@ class MakeAnimal:
             level = user.get("level", 1)
             exp = user.get("경험치", 0)
             self.saver.삭제하기(name,level,exp)  # 저장된 파일 삭제 메서드가 있어야 함
-            self.win.destroy()
+            self.delatewin.destroy()
             self.계정삭제창_open = False
             messagebox.showinfo("동물 친구와 헤어지게 되었습니다. 그동안 고마웠어요.")
         else:
