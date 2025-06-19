@@ -13,6 +13,7 @@ class StudyDamagochiFrame():
     # initial_animal_data 매개변수가 반드시 여기에 포함되어야 합니다.
     def __init__(self, win, initial_animal_data=None): 
         self.win = win
+        self.image_size = 200
         
         def confirm_exit():
             if messagebox.askokcancel("종료 확인", "정말 종료하시겠어요?"):
@@ -51,9 +52,12 @@ class StudyDamagochiFrame():
             print(f"에러: 해당 파일 못찾겠음 {img_path}")
             self.photo = None # 또는 기본 제공되는 투명 이미지 등
 
-        # 동물 그림 나타내기
-        self.label = Label(win, image=self.photo, bd=0, background="white")
+        # 레이블 생성
+        self.label = Label(win, bd=0, background="white")
         self.label.grid(row=1, column=0, columnspan=2, pady=30)
+
+        # 동물 그림 나타내기
+        self.update_animal_image()
 
         # 동물 이름과 레벨 나타내기
         # self.animal_name, self.levelup, self.경험치값 사용
@@ -86,3 +90,15 @@ class StudyDamagochiFrame():
         self.levelup = level
         self.경험치값 = exp
         self.character.config(text=f"{self.animal_name} lv. {self.levelup}({self.경험치값}%)")
+
+    def update_animal_image(self):
+        img_path = "result/egg.jpg"
+        if os.path.exists(img_path):
+            img = Image.open(img_path)
+            img = img.resize((self.image_size, self.image_size))
+            self.photo = ImageTk.PhotoImage(img)
+            self.label.config(image=self.photo)
+            self.label.image = self.photo  # 참조 유지
+        else:
+            print(f"에러: 해당 파일 못찾겠음 {img_path}")
+            self.photo = None

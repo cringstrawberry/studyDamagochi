@@ -15,7 +15,8 @@ class MakeAnimal:
     def __init__(self, main_win, study_damagochi_frame_instance): 
         self.main_win = main_win # 메인 Tk 윈도우 인스턴스
 
-        self.study_damagochi_frame = study_damagochi_frame_instance 
+        self.study_damagochi_frame = study_damagochi_frame_instance # 공부다마고치프레임 인스턴스 저장
+        # self.run_button = run_button_instance #run button 인스턴스 저장
 
         self.aniname_entry = None
         self.password_entry = None
@@ -80,10 +81,10 @@ class MakeAnimal:
                 # StudyDamagochiFrame의 메서드를 호출하여 메인 화면의 라벨을 업데이트
                 self.study_damagochi_frame.update_character_display(name, 1, 0)
             else:
-                messagebox.showerror("중복오류","이미 같은 이름의 동물 친구가 있어요.")
+                messagebox.showerror("중복 오류","이미 같은 이름의 동물 친구가 있어요. 다른 이름은 어떨까요?")
         else:
             # 사용자에게 입력 누락 메시지 표시 (필요시 라벨 사용)
-            messagebox.showerror("입력오류","동물 친구의 이름과 비밀번호는 꼭 필요해요")
+            messagebox.showerror("입력 오류","동물 친구의 이름과 비밀번호는 꼭 필요해요")
 
 
     def 로그인(self):  # 로그인 창 띄우기
@@ -109,7 +110,7 @@ class MakeAnimal:
         Button(
             self.loginwin, text="로그인",
             command=self.로그인확인,
-            bg='black', fg='white', font=('BM Jua', 20), width=11
+            bg='white', fg='black', font=('BM Jua', 20), width=11
         ).pack()
 
         self.로그인_open=True
@@ -129,70 +130,72 @@ class MakeAnimal:
         pw = self.password_entry.get() # Entry 위젯에서 값 가져오기
         user = self.saver.특정불러오기(name)  # 저장된 정보 불러오기
 
-        if user and user["name"] == name and user["pw"] == pw:
-            self.loginwin.destroy() # 현재 Toplevel 창 닫기
-            self.로그인_open = False
-            
-            # 여기서 불러온 레벨과 경험치 값을 추출합니다.
-            loaded_level = user.get("level", 1) # 'level' 키가 없으면 기본값 1
-            loaded_exp = user.get("경험치", 0) # '경험치' 키가 없으면 기본값 0
+        if name and pw:
+            if user and user["name"] == name and user["pw"] == pw:
+                self.loginwin.destroy() # 현재 Toplevel 창 닫기
+                self.로그인_open = False
+                
+                # 여기서 불러온 레벨과 경험치 값을 추출합니다.
+                loaded_level = user.get("level", 1) # 'level' 키가 없으면 기본값 1
+                loaded_exp = user.get("경험치", 0) # '경험치' 키가 없으면 기본값 0
 
-            # 로그인 성공 시 StudyDamagochiFrame의 메서드를 호출하여 메인 화면의 라벨 업데이트
-            # 이름, 레벨, 경험치를 모두 전달합니다.
-            self.study_damagochi_frame.update_character_display(user["name"], loaded_level, loaded_exp) 
+                # 로그인 성공 시 StudyDamagochiFrame의 메서드를 호출하여 메인 화면의 라벨 업데이트
+                # 이름, 레벨, 경험치를 모두 전달합니다.
+                self.study_damagochi_frame.update_character_display(user["name"], loaded_level, loaded_exp) 
+            else:
+                # 로그인 실패 메시지 표시 (messagebox 사용 시 사용자에게 더 명확)
+                messagebox.showerror("로그인 오류","동물 친구의 이름과 비밀번호가 일치하지 않아요.")
         else:
-            # 로그인 실패 메시지 표시 (messagebox 사용 시 사용자에게 더 명확)
-            messagebox.showerror("로그인오류","동물 친구의 이름과 비밀번호가 일치하지 않아요.")
+            messagebox.showerror("입력 오류","동물 친구의 이름과 비밀번호는 꼭 필요해요")
 
 
     def 계정삭제창(self, delate_win):
         # if not self.계정삭제창_open and not self.aniset_open and not self.로그인_open:
-        self.on_aniset_close()
-        self.on_login_close()
-        self.on_delate_close()
-        self.계정삭제창_open = True
-        self.delatewin = Toplevel(delate_win)
-        self.delatewin.title('친구랑 헤어지기')
-        self.delatewin.geometry('600x600')
-        self.delatewin.configure(bg='white')
+        if messagebox.askokcancel("초기화 확인", '계속하시면 현재 누적된 공부시간이 초기화됩니다. 계속하시겠어요?'):
+            self.run_button.공부종료()
+            self.on_aniset_close()
+            self.on_login_close()
+            self.on_delate_close()
+            self.계정삭제창_open = True
+            self.delatewin = Toplevel(delate_win)
+            self.delatewin.title('친구랑 헤어지기')
+            self.delatewin.geometry('250x450')
+            self.delatewin.configure(bg='white')
 
-        img_path = "studyDamagochi/result/egg.jpg"
+            img_path = "result/egg.jpg"
 
-        if os.path.exists(img_path):
-            img = Image.open(img_path)
-            img = img.resize((200, 200))
-            self.photo = ImageTk.PhotoImage(img)
-        else:
-            # 이미지가 없을 경우를 대비한 처리 (예: 빈 이미지 또는 에러 메시지)
-            print(f"에러: 해당 파일 못찾겠음 {img_path}")
-            self.photo = None # 또는 기본 제공되는 투명 이미지 등
+            if os.path.exists(img_path):
+                img = Image.open(img_path)
+                img = img.resize((200, 200))
+                self.photo = ImageTk.PhotoImage(img)
+            else:
+                # 이미지가 없을 경우를 대비한 처리 (예: 빈 이미지 또는 에러 메시지)
+                print(f"에러: 해당 파일 못찾겠음 {img_path}")
+                self.photo = None # 또는 기본 제공되는 투명 이미지 등
 
-        # 사용자 잡기
-        dontgoaway=Label(self.delatewin, text="정말.. 떠나실 건가요?", bg='white',fg='black', font=('BM Jua',20))
-        dontgoaway.grid(row=0,column=0,columnspan=2,padx=20)
+            # 사용자 잡기
+            dontgoaway=Label(self.delatewin, text="정말.. 떠나실 건가요?", bg='white',fg='black', font=('BM Jua',20))
+            dontgoaway.pack()#grid(row=0,column=0,columnspan=2,padx=20)
 
-        # 동물 그림 나타내기
-        delateanimal = Label(self.delatewin, image=self.photo, bd=0, background="white")
-        delateanimal.grid(row=1,column=0,columnspan=2,padx=20)
+            # 동물 그림 나타내기
+            delateanimal = Label(self.delatewin, image=self.photo, bd=0, background="white")
+            delateanimal.pack()#grid(row=1,column=0,columnspan=2,padx=20)
 
-        Label(self.delatewin, text="동물 이름", bg="white", fg='black',font=('BM Jua',20)).grid(row=2,column=0,columnspan=2)
-        self.delate_aniname_entry = Entry(self.delatewin)
-        self.delate_aniname_entry.grid(row=3,column=0,columnspan=2)
+            Label(self.delatewin, text="동물 이름", bg="white", fg='black',font=('BM Jua',20)).pack()#grid(row=2,column=0,columnspan=2)
+            self.delate_aniname_entry = Entry(self.delatewin).pack()
+            # self.delate_aniname_entry.grid(row=3,column=0,columnspan=2)
 
-        Label(self.delatewin, text="비밀번호", bg="white", fg='black',font=('BM Jua',20)).grid(row=4,column=0,columnspan=2)
-        self.delate_password_entry = Entry(self.delatewin, show="*")
-        self.delate_password_entry.grid(row=5,column=0,columnspan=2)
+            Label(self.delatewin, text="비밀번호", bg="white", fg='black',font=('BM Jua',20)).pack()#grid(row=4,column=0,columnspan=2)
+            self.delate_password_entry = Entry(self.delatewin, show="*").pack()
+            # self.delate_password_entry.grid(row=5,column=0,columnspan=2)
 
-        Button(
+            Button(
 
-            self.delatewin, 
-            text="삭제하기",
-            command=self.계정삭제,
-            bg='red', fg='white', font=('BM Jua', 15)
-        ).grid(row=6, column=0, columnspan=2, pady=20) 
-        # else:
-        #     self.on_aniset_close()
-        #     self.on_login_close()
+                self.delatewin, 
+                text="삭제하기",
+                command=self.계정삭제,
+                bg='white', fg='black', font=('BM Jua', 15)
+            ).pack()#grid(row=6, column=0, columnspan=2, pady=20)
         
     def on_delate_close(self):
         self.계정삭제창_open = False
@@ -213,6 +216,7 @@ class MakeAnimal:
                 self.delatewin.destroy()
                 self.계정삭제창_open = False
                 messagebox.showinfo("알림", "동물 친구와 헤어지게 되었습니다. 그동안 고마웠어요.")
+                self.study_damagochi_frame.update_character_display("삑삑이", 1, 0) 
             else:
                 messagebox.showerror("오류", "계정을 삭제하는 데 문제가 발생했어요.")
         else:

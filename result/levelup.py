@@ -1,50 +1,53 @@
 # 레벨업
 
 from tkinter import *
-from frame import StudyDamagochiFrame
-from studyDamagochi.result.setanimal import MakeAnimal
 
-class LevleUp(StudyDamagochiFrame, MakeAnimal):
-    def exper(self):
+
+class LevelUp:
+    def __init__(self, win, study_frame, animal_maker, savefile_instance):
+        self.win = win
+        self.study_frame = study_frame
+        self.animal_maker = animal_maker
+        self.SaveFile = savefile_instance
+
+
+        self.stoping = True
+
+    def exper(self, minutes):
         if self.stoping:
-            self.studytime = self.minutes
-            self.howmany = self.studytime//10
+            self.studytime = minutes
+            self.howmany = self.studytime
             if self.howmany>=1:
-                self.경험치값+=self.howmany*5 #10분마다 경험치 5 해당
-                if self.경험치값==100:
-                    print('레벨업하였습니다!')
-                    # levelup()
-                else:
-                    print('경험치가 올랐습니다.')
+                # 현재 경험치값 가져옴
+                current_exp = self.study_frame.경험치값
+                current_level = self.study_frame.levelup
+
+                # 경험치 누적
+                current_exp += self.howmany*1
+                self.study_frame.경험치값 = current_exp #1분마다 경험치 1 해당
+
+                # 레벨업 처리
+                while current_exp >= 100:
+                    current_level += 1
+                    self.imageup()
+                    current_exp -= 100
+                    print(f"레벨업! 현재 레벨: {current_level}")
+
+                # 변경된 경험치 및 레벨 저장
+                self.study_frame.경험치값 = current_exp
+                self.study_frame.levelup = current_level
+
+                # 화면에 변경 사항 반영
+                self.study_frame.update_character_display(
+                    self.study_frame.animal_name, current_level, current_exp
+                    
+                )
+                self.SaveFile.업데이트(self.study_frame.animal_name, current_level, current_exp)
             else:
-                print('10분 단위로 경험치가 오릅니다. 좀 더 공부하세요!')
+                print(f"1분 단위로 경험치가 오릅니다. 현재 공부 시간: {minutes}분") # print 다 메세지로 바꾸기
 
-    # def levelup(self):
-    #     self.levelup+=1
-        
-
-    # def imagesize(self, width, height):
-        
-
-
-
-
-
-
-
-
- # def exper(self):
-    #     if self.stoping:
-    #         self.studytime = self.minutes+(self.seconds//60) #분 + 초//60
-    #         self.perexper = f'{self.studytime//60:.1f}' #
-    #     if self.perexper//10>=1:
-    #         self.경험치값 +=self.perexper//10
-    #         if self.경험치값 == 100:
-    #             self.levelup+=1
-    #             print('1레벨 올랐습니다')
-    #             # self.(대충 이미지 연결)
-
-    #         else:
-    #             print('경험치가 올랐습니다.')
-    #     else:
-    #         print('10분 단위로 경험치가 오릅니다. 좀 더 공부하세요!')
+    def imageup(self):
+        # 레벨업마다 이미지 크기를 50씩 증가
+        self.study_frame.image_size += 25 #얼마나 커지는지 테스트 해보기
+        # 변경된 크기로 이미지 다시 그리기
+        self.study_frame.update_animal_image()
