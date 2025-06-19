@@ -33,7 +33,7 @@ class StudyDamagochiFrame():
         self.studytime = 0 # 공부시간
 
         # 동물 그림 설정
-        img_path = "result/egg.jpg"
+        img_path = "/Users/ttalgi/Documents/study/교과목/수행평가/파이썬/studyDamagochi/result/egg.jpg"
         # 파일이 존재하는지 확인하는 것이 좋습니다.
         if os.path.exists(img_path):
             img = Image.open(img_path)

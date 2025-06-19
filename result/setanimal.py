@@ -156,9 +156,13 @@ class MakeAnimal:
             self.delatewin.geometry('600x600')
             self.delatewin.configure(bg='white')
 
+<<<<<<< HEAD
             img_path = "result/egg.jpg"
             
             self.delatewin.protocol("WM_DELETE_WINDOW", self.on_delate_close)
+=======
+            img_path = "studyDamagochi/result/egg.jpg"
+>>>>>>> 6db60e4 (될지말지)
 
             if os.path.exists(img_path):
                 img = Image.open(img_path)
@@ -177,15 +181,16 @@ class MakeAnimal:
             delateanimal = Label(self.delatewin, image=self.photo, bd=0, background="white")
             delateanimal.grid(row=1,column=0,columnspan=2,padx=20)
 
-            delateaniname = Label(self.delatewin, text="동물 이름", bg="white", fg='black').grid(row=2,column=0,columnspan=2)
+            Label(self.delatewin, text="동물 이름", bg="white", fg='black',font=('BM Jua',20)).grid(row=2,column=0,columnspan=2)
             self.delate_aniname_entry = Entry(self.delatewin)
             self.delate_aniname_entry.grid(row=3,column=0,columnspan=2)
 
-            delatepassword = Label(self.delatewin, text="비밀번호", bg="white", fg='black').grid(row=4,column=0,columnspan=2)
+            Label(self.delatewin, text="비밀번호", bg="white", fg='black',font=('BM Jua',20)).grid(row=4,column=0,columnspan=2)
             self.delate_password_entry = Entry(self.delatewin, show="*")
             self.delate_password_entry.grid(row=5,column=0,columnspan=2)
 
             Button(
+<<<<<<< HEAD
                 self.delatewin, 
                 text="삭제하기",
                 command=self.계정삭제,
@@ -199,6 +204,12 @@ class MakeAnimal:
         self.계정삭제창_open = False
         if hasattr(self, 'delatewin') and self.delatewin.winfo_exists():
             self.delatewin.destroy()
+=======
+                self.delatewin, text="삭제하기",
+                command=self.계정삭제,
+                width=11, height=2, font=('BM Jua',20)
+            ).grid(row=6,column=0,columnspan=2,pady=20)
+>>>>>>> 6db60e4 (될지말지)
 
     def 계정삭제(self):
         name = self.delate_aniname_entry.get()
