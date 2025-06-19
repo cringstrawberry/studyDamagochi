@@ -97,4 +97,21 @@ class SaveFile:
         return False
     
     def 삭제하기(self, aniname, level, exp):
-        pass
+        all_accounts = self.목록불러오기()
+        
+        # 삭제 기준에 맞는 계정을 제거
+        new_accounts = [
+            account for account in all_accounts
+            if not (account.get("name") == aniname and
+                    account.get("level") == level and
+                    account.get("경험치") == exp)
+        ]
+        
+        # 삭제 전과 후 리스트 길이 비교로 삭제 성공 여부 확인
+        if len(new_accounts) < len(all_accounts):
+            self.save_all_accounts(new_accounts)
+            print(f"[삭제됨] '{aniname}' 계정이 삭제되었습니다.")
+            return True
+        else:
+            print(f"[실패] '{aniname}' 계정을 찾지 못했습니다.")
+            return False
