@@ -4,12 +4,19 @@ from tkinter import *
 from PIL import Image, ImageTk
 import os
 
+try:
+    from tkinter import messagebox
+except ImportError:
+    import tkMessageBox as messagebox
 
 class StudyDamagochiFrame():
     # initial_animal_data 매개변수가 반드시 여기에 포함되어야 합니다.
     def __init__(self, win, initial_animal_data=None): 
         self.win = win
         
+        def confirm_exit():
+            if messagebox.askokcancel("종료 확인", "정말 종료하시겠어요?"):
+                win.destroy()
         # 창 생성 및 설정
         win.geometry("770x880")
         win.title("오늘은 공부를 했나요?")
@@ -62,7 +69,7 @@ class StudyDamagochiFrame():
         self.bend = Button(win, width=13, height=2, text="공부종료", font=('BM Jua', 30), activebackground="yellow", highlightthickness=2, highlightbackground='yellow', command=None)
         self.bstop = Button(win, width=13, height=2, text="일시정지", font=('BM Jua', 30), activebackground="yellow", highlightthickness=2, highlightbackground='yellow', command=None)
         self.breplay = Button(win, width=13, height=2, text="계속", font=('BM Jua', 30), activebackground="yellow", highlightthickness=2, highlightbackground='yellow', command=None)
-        self.windowend = Button(win, width=3, height=1, text="종료", font=("BM Jua", 20), highlightthickness=2, highlightbackground='black', command=self.win.destroy)
+        self.windowend = Button(win, width=3, height=1, text="종료", font=("BM Jua", 20), highlightthickness=2, highlightbackground='black', command=confirm_exit)
 
         # 버튼 나타내기
         self.bstart.grid(row=5, column=0, padx=10, pady=10)

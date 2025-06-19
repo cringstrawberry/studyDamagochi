@@ -207,18 +207,16 @@ class MakeAnimal:
         if user and user["name"] == name and user["pw"] == pw:
             level = user.get("level", 1)
             exp = user.get("경험치", 0)
-            self.saver.삭제하기(name,level,exp)  # 저장된 파일 삭제 메서드가 있어야 함
-            self.delatewin.destroy()
-            self.계정삭제창_open = False
-            messagebox.showinfo("동물 친구와 헤어지게 되었습니다. 그동안 고마웠어요.")
+            삭제성공 = self.saver.삭제하기(name, level, exp)
+
+            if 삭제성공:
+                self.delatewin.destroy()
+                self.계정삭제창_open = False
+                messagebox.showinfo("알림", "동물 친구와 헤어지게 되었습니다. 그동안 고마웠어요.")
+            else:
+                messagebox.showerror("오류", "계정을 삭제하는 데 문제가 발생했어요.")
         else:
-            messagebox.showerror("동물 친구의 이름과 비밀번호가 맞지 않아요.")
-
-
-
-
-
-
+            messagebox.showerror("오류", "동물 친구의 이름과 비밀번호가 맞지 않아요.")
 
 
 
