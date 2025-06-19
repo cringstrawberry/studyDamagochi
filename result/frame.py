@@ -40,7 +40,7 @@ class StudyDamagochiFrame():
 
         self.studytime = 0 # 공부시간
 
-        # 동물 그림 설정
+        # 기본 동물 그림 설정
         img_path = "result/egg.jpg"
         # 파일이 존재하는지 확인하는 것이 좋습니다.
         if os.path.exists(img_path):
@@ -91,6 +91,7 @@ class StudyDamagochiFrame():
         self.경험치값 = exp
         self.character.config(text=f"{self.animal_name} lv. {self.levelup}({self.경험치값}%)")
 
+    # 이미지 크기 업데이트
     def update_animal_image(self):
         img_path = "result/egg.jpg"
         if os.path.exists(img_path):
@@ -98,7 +99,7 @@ class StudyDamagochiFrame():
             img = img.resize((self.image_size, self.image_size))
             self.photo = ImageTk.PhotoImage(img)
             self.label.config(image=self.photo)
-            self.label.image = self.photo  # 참조 유지
+            self.label.image = self.photo
         else:
             print(f"에러: 해당 파일 못찾겠음 {img_path}")
             self.photo = None

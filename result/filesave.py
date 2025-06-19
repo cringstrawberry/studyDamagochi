@@ -1,18 +1,18 @@
 import json
 import os
 
+try:
+    from tkinter import messagebox
+except ImportError:
+    import tkMessageBox as messagebox
+
 class SaveFile:
 
-    def __init__(self):
-        # 파일 경로를 인스턴스 변수로 저장해두면 편리합니다.
+    def __init__(self): # 이미지 경로 미리 지정
         self.file_path = "animalUser.txt"
 
     # 계정 목록을 파일에 저장
     def save_all_accounts(self, accounts_list):
-        """
-        주어진 계정 목록(리스트)을 파일에 저장합니다.
-        기존 파일 내용은 이 목록으로 완전히 덮어씌워집니다.
-        """
         with open(self.file_path, "w", encoding="utf-8") as f:
             json.dump(accounts_list, f, ensure_ascii=False, indent=2)
 
@@ -32,13 +32,13 @@ class SaveFile:
                 return data
             except json.JSONDecodeError:
                 # JSON 형식이 아닐 경우 오류 처리
-                print(f"Error: {self.file_path} 파일의 JSON 형식이 올바르지 않습니다. 빈 리스트를 반환합니다.")
+                messagebox.showerror("형식 에러",f"{self.file_path} 파일의 JSON 형식이 올바르지 않습니다. 빈 리스트를 반환합니다.")
+                
                 return []
 
 
     # 특정 계정 정보 업데이트 또는 새 계정 추가
     def tray(self, aniname, password, level, exp):
-    
         all_accounts = self.목록불러오기() # 현재 모든 계정 불러오기
         
         # 기존 계정 찾기
@@ -67,10 +67,6 @@ class SaveFile:
 
     # 특정 계정 정보 불러오기(로그인)
     def 특정불러오기(self, aniname):
-        """
-        특정 이름의 계정 정보를 찾아 반환합니다.
-        계정이 없으면 None을 반환합니다.
-        """
         all_accounts = self.목록불러오기()
         for account in all_accounts:
             if account.get("name") == aniname:
@@ -79,9 +75,6 @@ class SaveFile:
 
     # '로그인 성공 후' 계정 데이터 업데이트
     def 업데이트(self, aniname, new_level, new_exp):
-        """
-        로그인한 특정 계정의 레벨과 경험치만 업데이트합니다.
-        """
         all_accounts = self.목록불러오기()
         updated = False
         for i, account in enumerate(all_accounts):

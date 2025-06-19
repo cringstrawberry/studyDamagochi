@@ -6,6 +6,7 @@ from levelup import LevelUp
 from runbutton import RunButton
 from filesave import SaveFile
 
+# 클래스 인자 전달 그리고 시작
 class AppController:
     def __init__(self, win):
         self.win = win

@@ -4,11 +4,11 @@ import os
 
 from frame import StudyDamagochiFrame
 
-
+# 버튼 실행 기능
 class RunButton(StudyDamagochiFrame):
     def __init__(self, frame, levelup_instance):
         self.frame = frame
-        self.levelup_instance = levelup_instance
+        self.levelup_instance = levelup_instance # 레벨업 객체 들고오기
         self.frame.bstart.config(command=self.공부시작)
         self.frame.bend.config(command=self.공부종료)
         self.frame.bstop.config(command=self.일시정지)
@@ -46,7 +46,7 @@ class RunButton(StudyDamagochiFrame):
         self.stoping = False
         self.starting = False
 
-        total_minutes = self.sec // 60
+        total_minutes = self.sec // 60 # 분으로 계산
         self.sec = 0
         self.frame.timer.config(text="00:00")
 
@@ -55,7 +55,7 @@ class RunButton(StudyDamagochiFrame):
             self.levelup_instance.exper(total_minutes)
             self.timer_id = None
 
-        self.levelup_instance.exper(total_minutes)
+        self.levelup_instance.exper(total_minutes) #공부시간 계산해서 레벨업인스턴스에 전달
 
     def 일시정지(self):
         if self.playing:
@@ -70,4 +70,4 @@ class RunButton(StudyDamagochiFrame):
             minutes = self.sec // 60
             seconds = self.sec % 60
             self.frame.timer.config(text=f"{minutes:02}:{seconds:02}")
-            self.timer_id = self.frame.win.after(1000, self.타이머업데이트)
+            self.timer_id = self.frame.win.after(1000, self.타이머업데이트) # 흐르는 시간 출력
