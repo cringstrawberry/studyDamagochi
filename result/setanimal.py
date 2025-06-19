@@ -26,41 +26,40 @@ class MakeAnimal:
         self.계정삭제창_open = False
 
     def aniset(self, create_win):
-        print(self.aniset_open, self.로그인_open, self.계정삭제창_open)
-        if not self.aniset_open and not self.로그인_open and not self.계정삭제창_open:
-            self.on_login_close()
-            self.on_delate_close()
-            self.anisetwin = Toplevel(create_win)
-            self.anisetwin.title("나만의 펫 만들기")
-            self.anisetwin.geometry("600x600")
-            self.anisetwin.configure(bg="white")
-            
-            self.anisetwin.protocol("WM_DELETE_WINDOW", self.on_aniset_close)
+        self.on_aniset_close()
+        self.on_login_close()
+        self.on_delate_close()
+        self.anisetwin = Toplevel(create_win)
+        self.anisetwin.title("나만의 펫 만들기")
+        self.anisetwin.geometry("600x600")
+        self.anisetwin.configure(bg="white")
+        
+        self.anisetwin.protocol("WM_DELETE_WINDOW", self.on_aniset_close)
 
-            Label(self.anisetwin, text="동물 이름", bg='white',fg='black',font=('BM Jua', 20)).pack()
-            self.aniname_entry = Entry(self.anisetwin) 
-            self.aniname_entry.pack()
+        Label(self.anisetwin, text="동물 이름", bg='white',fg='black',font=('BM Jua', 20)).pack()
+        self.aniname_entry = Entry(self.anisetwin) 
+        self.aniname_entry.pack()
 
-            Label(self.anisetwin, text="비밀번호", bg='white',fg='black',font=('BM Jua', 20)).pack()
-            self.password_entry = Entry(self.anisetwin, show="*") 
-            self.password_entry.pack()
+        Label(self.anisetwin, text="비밀번호", bg='white',fg='black',font=('BM Jua', 20)).pack()
+        self.password_entry = Entry(self.anisetwin, show="*") 
+        self.password_entry.pack()
 
-            Button(
-                self.anisetwin, text="만들기",
-                command=self.create_character,
-                bg='white', fg='black', font=('BM Jua', 20), width=11
-            ).pack(pady=20)
+        Button(
+            self.anisetwin, text="만들기",
+            command=self.create_character,
+            bg='white', fg='black', font=('BM Jua', 20), width=11
+        ).pack(pady=20)
 
-            Button(
-                self.anisetwin, text="동물이 있으신가요?",
-                command=self.로그인,
-                bg='white', fg='black', font=('BM Jua', 20)
-            ).pack()
+        Button(
+            self.anisetwin, text="동물이 있으신가요?",
+            command=self.로그인,
+            bg='white', fg='black', font=('BM Jua', 20)
+        ).pack()
 
-            self.aniset_open = True
-        else:
-            messagebox.showinfo("알림", "이미 다른 창이 열려 있어요!")
-            self.on_aniset_close() #True일 때, 창닫기
+        #     self.aniset_open = True
+        # else:
+        #     messagebox.showinfo("알림", "이미 다른 창이 열려 있어요!")
+        #     self.on_aniset_close() #True일 때, 창닫기
 
     def on_aniset_close(self):
         self.aniset_open = False
@@ -89,35 +88,35 @@ class MakeAnimal:
 
     def 로그인(self):  # 로그인 창 띄우기
         # 이전에 열린 Toplevel 창이 있다면 닫기
-        if self.aniset_open and not self.로그인_open and not self.계정삭제창_open:
-            self.on_aniset_close()
-            self.on_delate_close()
-            self.loginwin = Toplevel() # 새로운 Toplevel 창 생성
-            self.loginwin.title("로그인")
-            self.loginwin.geometry("600x600")
-            self.loginwin.configure(bg="white")
-            
-            self.loginwin.protocol("WM_DELETE_WINDOW", self.on_login_close)
+        self.on_aniset_close()
+        self.on_login_close()
+        self.on_delate_close()
+        self.loginwin = Toplevel() # 새로운 Toplevel 창 생성
+        self.loginwin.title("로그인")
+        self.loginwin.geometry("600x600")
+        self.loginwin.configure(bg="white")
+        
+        self.loginwin.protocol("WM_DELETE_WINDOW", self.on_login_close)
 
-            Label(self.loginwin, text="동물 이름", bg='white',fg='black',font=('BM Jua', 20)).pack()
-            self.aniname_entry = Entry(self.loginwin) # Entry 위젯 재할당
-            self.aniname_entry.pack()
+        Label(self.loginwin, text="동물 이름", bg='white',fg='black',font=('BM Jua', 20)).pack()
+        self.aniname_entry = Entry(self.loginwin) # Entry 위젯 재할당
+        self.aniname_entry.pack()
 
-            Label(self.loginwin, text="비밀번호", bg='white',fg='black',font=('BM Jua', 20)).pack()
-            self.password_entry = Entry(self.loginwin, show="*") # Entry 위젯 재할당
-            self.password_entry.pack()
+        Label(self.loginwin, text="비밀번호", bg='white',fg='black',font=('BM Jua', 20)).pack()
+        self.password_entry = Entry(self.loginwin, show="*") # Entry 위젯 재할당
+        self.password_entry.pack()
 
-            Button(
-                self.loginwin, text="로그인",
-                command=self.로그인확인,
-                bg='black', fg='white', font=('BM Jua', 20), width=11
-            ).pack()
+        Button(
+            self.loginwin, text="로그인",
+            command=self.로그인확인,
+            bg='black', fg='white', font=('BM Jua', 20), width=11
+        ).pack()
 
-            self.로그인_open=True
-        else:
-            messagebox.showinfo("알림", "이미 다른 창이 열려 있어요!")
-            self.로그인_open=False
-            self.on_login_close()
+        self.로그인_open=True
+        # else:
+        #     messagebox.showinfo("알림", "이미 다른 창이 열려 있어요!")
+        #     self.로그인_open=False
+        #     self.on_login_close()
 
     def on_login_close(self):
         self.로그인_open = False
@@ -147,53 +146,54 @@ class MakeAnimal:
 
 
     def 계정삭제창(self, delate_win):
-        if not self.계정삭제창_open and not self.aniset_open and not self.로그인_open:
-            self.on_aniset_close()
-            self.on_login_close()
-            self.계정삭제창_open = True
-            self.delatewin = Toplevel(delate_win)
-            self.delatewin.title('친구랑 헤어지기')
-            self.delatewin.geometry('600x600')
-            self.delatewin.configure(bg='white')
+        # if not self.계정삭제창_open and not self.aniset_open and not self.로그인_open:
+        self.on_aniset_close()
+        self.on_login_close()
+        self.on_delate_close()
+        self.계정삭제창_open = True
+        self.delatewin = Toplevel(delate_win)
+        self.delatewin.title('친구랑 헤어지기')
+        self.delatewin.geometry('600x600')
+        self.delatewin.configure(bg='white')
 
-            img_path = "studyDamagochi/result/egg.jpg"
+        img_path = "studyDamagochi/result/egg.jpg"
 
-            if os.path.exists(img_path):
-                img = Image.open(img_path)
-                img = img.resize((200, 200))
-                self.photo = ImageTk.PhotoImage(img)
-            else:
-                # 이미지가 없을 경우를 대비한 처리 (예: 빈 이미지 또는 에러 메시지)
-                print(f"에러: 해당 파일 못찾겠음 {img_path}")
-                self.photo = None # 또는 기본 제공되는 투명 이미지 등
-
-            # 사용자 잡기
-            dontgoaway=Label(self.delatewin, text="정말.. 떠나실 건가요?", bg='white',fg='black', font=('BM Jua',20))
-            dontgoaway.grid(row=0,column=0,columnspan=2,padx=20)
-
-            # 동물 그림 나타내기
-            delateanimal = Label(self.delatewin, image=self.photo, bd=0, background="white")
-            delateanimal.grid(row=1,column=0,columnspan=2,padx=20)
-
-            Label(self.delatewin, text="동물 이름", bg="white", fg='black',font=('BM Jua',20)).grid(row=2,column=0,columnspan=2)
-            self.delate_aniname_entry = Entry(self.delatewin)
-            self.delate_aniname_entry.grid(row=3,column=0,columnspan=2)
-
-            Label(self.delatewin, text="비밀번호", bg="white", fg='black',font=('BM Jua',20)).grid(row=4,column=0,columnspan=2)
-            self.delate_password_entry = Entry(self.delatewin, show="*")
-            self.delate_password_entry.grid(row=5,column=0,columnspan=2)
-
-            Button(
-
-                self.delatewin, 
-                text="삭제하기",
-                command=self.계정삭제,
-                bg='red', fg='white', font=('BM Jua', 15)
-            ).grid(row=6, column=0, columnspan=2, pady=20) 
+        if os.path.exists(img_path):
+            img = Image.open(img_path)
+            img = img.resize((200, 200))
+            self.photo = ImageTk.PhotoImage(img)
         else:
-            messagebox.showinfo("알림", "이미 다른 창이 열려 있어요!")
-            self.on_delate_close()
-            
+            # 이미지가 없을 경우를 대비한 처리 (예: 빈 이미지 또는 에러 메시지)
+            print(f"에러: 해당 파일 못찾겠음 {img_path}")
+            self.photo = None # 또는 기본 제공되는 투명 이미지 등
+
+        # 사용자 잡기
+        dontgoaway=Label(self.delatewin, text="정말.. 떠나실 건가요?", bg='white',fg='black', font=('BM Jua',20))
+        dontgoaway.grid(row=0,column=0,columnspan=2,padx=20)
+
+        # 동물 그림 나타내기
+        delateanimal = Label(self.delatewin, image=self.photo, bd=0, background="white")
+        delateanimal.grid(row=1,column=0,columnspan=2,padx=20)
+
+        Label(self.delatewin, text="동물 이름", bg="white", fg='black',font=('BM Jua',20)).grid(row=2,column=0,columnspan=2)
+        self.delate_aniname_entry = Entry(self.delatewin)
+        self.delate_aniname_entry.grid(row=3,column=0,columnspan=2)
+
+        Label(self.delatewin, text="비밀번호", bg="white", fg='black',font=('BM Jua',20)).grid(row=4,column=0,columnspan=2)
+        self.delate_password_entry = Entry(self.delatewin, show="*")
+        self.delate_password_entry.grid(row=5,column=0,columnspan=2)
+
+        Button(
+
+            self.delatewin, 
+            text="삭제하기",
+            command=self.계정삭제,
+            bg='red', fg='white', font=('BM Jua', 15)
+        ).grid(row=6, column=0, columnspan=2, pady=20) 
+        # else:
+        #     self.on_aniset_close()
+        #     self.on_login_close()
+        
     def on_delate_close(self):
         self.계정삭제창_open = False
         if hasattr(self, 'delatewin') and self.delatewin.winfo_exists():
