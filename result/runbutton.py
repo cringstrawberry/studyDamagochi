@@ -17,19 +17,21 @@ class RunButton(StudyDamagochiFrame):
         self.playing = False
         self.stoping = False
         self.timer_id = None
-        
+        self.starting = False
+
 
     def 공부시작(self):
-        if not self.playing and not self.stoping:
+        if not self.stoping and not self.starting:
             self.playing = True
             self.stoping = False
+            self.starting = True
             if self.timer_id:  # 이전 타이머가 있다면 취소
                 self.frame.win.after_cancel(self.timer_id)
                 self.timer_id = None
             self.타이머업데이트()
 
     def 계속(self):
-        if not self.playing and self.stoping:
+        if self.playing and self.stoping:
             self.playing = True
             self.stoping = False
             if self.timer_id:  # 이전 타이머가 있다면 취소
@@ -40,6 +42,7 @@ class RunButton(StudyDamagochiFrame):
     def 공부종료(self):
         self.playing = False
         self.stoping = False
+        self.starting = False
         self.sec = 0
         self.frame.timer.config(text="00:00")
         if self.timer_id:  # 타이머 중단
@@ -47,11 +50,11 @@ class RunButton(StudyDamagochiFrame):
             self.timer_id = None
 
     def 일시정지(self):
-        self.playing = False
-        self.stoping = True
-        if self.timer_id:
-            self.frame.win.after_cancel(self.timer_id)
-            self.timer_id = None
+        if self.playing:
+            self.stoping = True
+            if self.timer_id:
+                self.frame.win.after_cancel(self.timer_id)
+                self.timer_id = None
             
     def 타이머업데이트(self):
         if self.playing:

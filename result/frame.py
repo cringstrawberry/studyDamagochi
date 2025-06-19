@@ -62,7 +62,7 @@ class StudyDamagochiFrame():
         self.bend = Button(win, width=13, height=2, text="공부종료", font=('BM Jua', 30), activebackground="yellow", highlightthickness=2, highlightbackground='yellow', command=None)
         self.bstop = Button(win, width=13, height=2, text="일시정지", font=('BM Jua', 30), activebackground="yellow", highlightthickness=2, highlightbackground='yellow', command=None)
         self.breplay = Button(win, width=13, height=2, text="계속", font=('BM Jua', 30), activebackground="yellow", highlightthickness=2, highlightbackground='yellow', command=None)
-        self.windowend = Button(win, width=3, height=1, text="종료", font=("BM Jua", 20), highlightthickness=2, highlightbackground='black', command=None)
+        self.windowend = Button(win, width=3, height=1, text="종료", font=("BM Jua", 20), highlightthickness=2, highlightbackground='black', command=self.win.destroy)
 
         # 버튼 나타내기
         self.bstart.grid(row=5, column=0, padx=10, pady=10)
