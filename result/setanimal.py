@@ -152,7 +152,7 @@ class MakeAnimal:
     def 계정삭제창(self, delate_win):
         # if not self.계정삭제창_open and not self.aniset_open and not self.로그인_open:
         if messagebox.askokcancel("초기화 확인", '계속하시면 현재 누적된 공부시간이 초기화됩니다. 계속하시겠어요?'):
-            self.run_button.공부종료()
+            self.logic.공부종료()
             self.on_aniset_close()
             self.on_login_close()
             self.on_delate_close()
@@ -175,19 +175,19 @@ class MakeAnimal:
 
             # 사용자 잡기
             dontgoaway=Label(self.delatewin, text="정말.. 떠나실 건가요?", bg='white',fg='black', font=('BM Jua',20))
-            dontgoaway.pack()#grid(row=0,column=0,columnspan=2,padx=20)
+            dontgoaway.grid(row=0,column=0,columnspan=2,padx=20)
 
             # 동물 그림 나타내기
             delateanimal = Label(self.delatewin, image=self.photo, bd=0, background="white")
-            delateanimal.pack()#grid(row=1,column=0,columnspan=2,padx=20)
+            delateanimal.grid(row=1,column=0,columnspan=2,padx=20)
 
-            Label(self.delatewin, text="동물 이름", bg="white", fg='black',font=('BM Jua',20)).pack()#grid(row=2,column=0,columnspan=2)
-            self.delate_aniname_entry = Entry(self.delatewin).pack()
-            # self.delate_aniname_entry.grid(row=3,column=0,columnspan=2)
+            Label(self.delatewin, text="동물 이름", bg="white", fg='black',font=('BM Jua',20)).grid(row=2,column=0,columnspan=2)
+            self.delate_aniname_entry = Entry(self.delatewin)
+            self.delate_aniname_entry.grid(row=3,column=0,columnspan=2)
 
-            Label(self.delatewin, text="비밀번호", bg="white", fg='black',font=('BM Jua',20)).pack()#grid(row=4,column=0,columnspan=2)
-            self.delate_password_entry = Entry(self.delatewin, show="*").pack()
-            # self.delate_password_entry.grid(row=5,column=0,columnspan=2)
+            Label(self.delatewin, text="비밀번호", bg="white", fg='black',font=('BM Jua',20)).grid(row=4,column=0,columnspan=2)
+            self.delate_password_entry = Entry(self.delatewin, show="*")
+            self.delate_password_entry.grid(row=5,column=0,columnspan=2)
 
             Button(
 
@@ -195,7 +195,7 @@ class MakeAnimal:
                 text="삭제하기",
                 command=self.계정삭제,
                 bg='white', fg='black', font=('BM Jua', 15)
-            ).pack()#grid(row=6, column=0, columnspan=2, pady=20)
+            ).grid(row=6, column=0, columnspan=2, pady=20)
         
     def on_delate_close(self):
         self.계정삭제창_open = False
