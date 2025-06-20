@@ -52,7 +52,6 @@ class RunButton(StudyDamagochiFrame):
 
         if self.timer_id:  # 타이머 중단
             self.frame.win.after_cancel(self.timer_id)
-            self.levelup_instance.exper(total_minutes)
             self.timer_id = None
 
         self.levelup_instance.exper(total_minutes) #공부시간 계산해서 레벨업인스턴스에 전달
