@@ -23,14 +23,14 @@ class LevelUp:
                 current_level = self.study_frame.levelup
 
                 # 경험치 누적
-                current_exp += self.howmany*1
+                current_exp += self.howmany*5 #사실은 1
                 self.study_frame.경험치값 = current_exp #1분마다 경험치 1 해당
 
                 # 레벨업 처리
-                while current_exp >= 100:
-                    current_level += 1
-                    self.imageup()
-                    current_exp -= 100
+                while current_exp >= 10: #사실은 100%
+                    current_level += 1 #1레벨 상승
+                    self.imageup() #이미지 크기 조절
+                    current_exp -= 10 # 레벨업한 후 경험치 초기화
                     print(f"레벨업! 현재 레벨: {current_level}")
 
                 # 변경된 경험치 및 레벨 저장

@@ -36,7 +36,7 @@ class AppController:
         self.make_animal.logic = self.logic
         
         # 시작 시 새로운 친구 안내
-        messagebox.showinfo("시작", "환영합니다! 처음이신가요? \n새로운 동물 친구를 만들어주세요.")
+        messagebox.showinfo("시작", "공부 다마고치에 오신 걸 환영합니다! 처음이신가요? \n새로운 동물 친구를 만들어주세요.")
         self.make_animal.aniset(win)
         
         # 버튼 UI를 main.py 대신 여기서 생성/관리해도 되고
