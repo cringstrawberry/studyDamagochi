@@ -124,7 +124,7 @@ class StudyDamagochiFrame():
         self.character.config(text=f"{self.animal_name} lv. {self.levelup}({self.경험치값}%)")
 
     def update_animal_image(self):
-        img_path = "/Users/ttalgi/Documents/study/교과목/수행평가/파이썬/studyDamagochi/image/egg.png"
+        img_path = "/Users/ttalgi/Documents/study/교과목/수행평가/파이썬/studyDamagochi/result/egg.jpg"
         if os.path.exists(img_path):
             img = Image.open(img_path)
             img = img.resize((self.image_size, self.image_size))
