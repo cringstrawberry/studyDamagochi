@@ -27,6 +27,12 @@ class MakeAnimal:
         self.계정삭제창_open = False
 
     def aniset(self, create_win):
+        if self.logic.starting:
+            if messagebox.askokcancel("공부 종료 및 친구 만나기", '공부 종료하고 다른 친구를 만날까요?'):
+                self.logic.공부종료()
+            else:
+                return
+            
         self.on_aniset_close()
         self.on_login_close()
         self.on_delate_close()
@@ -34,7 +40,7 @@ class MakeAnimal:
         self.anisetwin.title("나만의 펫 만들기")
         self.anisetwin.geometry("600x600")
         self.anisetwin.configure(bg="white")
-        
+            
         self.anisetwin.protocol("WM_DELETE_WINDOW", self.on_aniset_close)
 
         Label(self.anisetwin, text="동물 이름", bg='white',fg='black',font=('BM Jua', 20)).pack()
@@ -57,10 +63,6 @@ class MakeAnimal:
             bg='white', fg='black', font=('BM Jua', 20)
         ).pack()
 
-        #     self.aniset_open = True
-        # else:
-        #     messagebox.showinfo("알림", "이미 다른 창이 열려 있어요!")
-        #     self.on_aniset_close() #True일 때, 창닫기
 
     def on_aniset_close(self):
         self.aniset_open = False
@@ -75,7 +77,7 @@ class MakeAnimal:
         user = self.saver.특정불러오기(name)
         if name and pw: # 이름과 비밀번호가 모두 입력되었는지 확인
             if user is None:
-                self.saver.tray(name, pw, level=1, exp=0)  # 파일 저장 (이름, 비밀번호, 레벨 1, 경험치 0)
+                self.saver.tray(name, pw, level=1, exp=0, big=200)  # 파일 저장 (이름, 비밀번호, 레벨 1, 경험치 0)
                 self.anisetwin.destroy() # 현재 Toplevel 창 닫기
                 self.aniset_open = False
                 # StudyDamagochiFrame의 메서드를 호출하여 메인 화면의 라벨을 업데이트
@@ -114,10 +116,6 @@ class MakeAnimal:
         ).pack()
 
         self.로그인_open=True
-        # else:
-        #     messagebox.showinfo("알림", "이미 다른 창이 열려 있어요!")
-        #     self.로그인_open=False
-        #     self.on_login_close()
 
     def on_login_close(self):
         self.로그인_open = False
@@ -150,53 +148,52 @@ class MakeAnimal:
 
 
     def 계정삭제창(self, delate_win):
-        # if not self.계정삭제창_open and not self.aniset_open and not self.로그인_open:
-        if messagebox.askokcancel("초기화 확인", '계속하시면 현재 누적된 공부시간이 초기화됩니다. 계속하시겠어요?'):
-            self.logic.공부종료()
-            self.on_aniset_close()
-            self.on_login_close()
-            self.on_delate_close()
-            self.계정삭제창_open = True
-            self.delatewin = Toplevel(delate_win)
-            self.delatewin.title('친구랑 헤어지기')
-            self.delatewin.geometry('250x450')
-            self.delatewin.configure(bg='white')
-
-            img_path = "result/egg.jpg"
-
-            if os.path.exists(img_path):
-                img = Image.open(img_path)
-                img = img.resize((200, 200))
-                self.photo = ImageTk.PhotoImage(img)
+        if self.logic.starting:
+            if messagebox.askokcancel("공부 종료 및 친구헤어지기", "공부를 종료하고 친구와 헤어질까요?"):
+                self.logic.공부종료()
             else:
-                # 이미지가 없을 경우를 대비한 처리 (예: 빈 이미지 또는 에러 메시지)
-                print(f"에러: 해당 파일 못찾겠음 {img_path}")
-                self.photo = None # 또는 기본 제공되는 투명 이미지 등
+                return  # 사용자가 '취소' 눌렀을 경우 창 열지 않음
 
-            # 사용자 잡기
-            dontgoaway=Label(self.delatewin, text="정말.. 떠나실 건가요?", bg='white',fg='black', font=('BM Jua',20))
-            dontgoaway.grid(row=0,column=0,columnspan=2,padx=20)
+        # 공부가 종료됐든 안 됐든 삭제창은 열기
+        self.on_aniset_close()
+        self.on_login_close()
+        self.on_delate_close()
+        self.계정삭제창_open = True
 
-            # 동물 그림 나타내기
-            delateanimal = Label(self.delatewin, image=self.photo, bd=0, background="white")
-            delateanimal.grid(row=1,column=0,columnspan=2,padx=20)
+        self.delatewin = Toplevel(delate_win)
+        self.delatewin.title('친구랑 헤어지기')
+        self.delatewin.geometry('220x450')
+        self.delatewin.configure(bg='white')
 
-            Label(self.delatewin, text="동물 이름", bg="white", fg='black',font=('BM Jua',20)).grid(row=2,column=0,columnspan=2)
-            self.delate_aniname_entry = Entry(self.delatewin)
-            self.delate_aniname_entry.grid(row=3,column=0,columnspan=2)
+        img_path = "/Users/ttalgi/Documents/study/교과목/수행평가/파이썬/studyDamagochi/image/egg.png"
 
-            Label(self.delatewin, text="비밀번호", bg="white", fg='black',font=('BM Jua',20)).grid(row=4,column=0,columnspan=2)
-            self.delate_password_entry = Entry(self.delatewin, show="*")
-            self.delate_password_entry.grid(row=5,column=0,columnspan=2)
+        if os.path.exists(img_path):
+            img = Image.open(img_path)
+            img = img.resize((200, 200))
+            self.photo = ImageTk.PhotoImage(img)
+        else:
+            messagebox.showerror("오류", f"이미지가 존재하지 않아요. {img_path}")
+            self.photo = None
 
-            Button(
+        Label(self.delatewin, text="정말.. 떠나실 건가요?", bg='white', fg='black', font=('BM Jua', 20)).grid(row=0, column=0, columnspan=2, padx=20)
 
-                self.delatewin, 
-                text="삭제하기",
-                command=self.계정삭제,
-                bg='white', fg='black', font=('BM Jua', 15)
-            ).grid(row=6, column=0, columnspan=2, pady=20)
-        
+        Label(self.delatewin, image=self.photo, bd=0, background="white").grid(row=1, column=0, columnspan=2)
+
+        Label(self.delatewin, text="동물 이름", bg="white", fg='black', font=('BM Jua', 20)).grid(row=2, column=0, columnspan=2)
+        self.delate_aniname_entry = Entry(self.delatewin)
+        self.delate_aniname_entry.grid(row=3, column=0, columnspan=2)
+
+        Label(self.delatewin, text="비밀번호", bg="white", fg='black', font=('BM Jua', 20)).grid(row=4, column=0, columnspan=2)
+        self.delate_password_entry = Entry(self.delatewin, show="*")
+        self.delate_password_entry.grid(row=5, column=0, columnspan=2)
+
+        Button(
+            self.delatewin,
+            text="삭제하기",
+            command=self.계정삭제,
+            bg='white', fg='black', font=('BM Jua', 15)
+        ).grid(row=6, column=0, columnspan=2, pady=20)
+
     def on_delate_close(self):
         self.계정삭제창_open = False
         if hasattr(self, 'delatewin') and self.delatewin.winfo_exists():
@@ -216,7 +213,10 @@ class MakeAnimal:
                 self.delatewin.destroy()
                 self.계정삭제창_open = False
                 messagebox.showinfo("알림", "동물 친구와 헤어지게 되었습니다. 그동안 고마웠어요.")
-                self.study_damagochi_frame.update_character_display("삑삑이", 1, 0) 
+                self.study_damagochi_frame.update_character_display("삑삑이", 1, 0)  # 기본값으로 대치
+                self.study_damagochi_frame.image_size = 150  # 이미지 크기 초기화
+                self.study_damagochi_frame.update_animal_image()  # 실제 화면 반영
+
             else:
                 messagebox.showerror("오류", "계정을 삭제하는 데 문제가 발생했어요.")
         else:

@@ -56,6 +56,14 @@ class RunButton(StudyDamagochiFrame):
 
         self.levelup_instance.exper(total_minutes) #공부시간 계산해서 레벨업인스턴스에 전달
 
+        self.levelup_instance.SaveFile.업데이트(
+        self.frame.animal_name,
+        self.frame.levelup,
+        self.frame.경험치값,
+        self.frame.image_size  # 현재 이미지 크기(동물덩치)
+    )
+
+
     def 일시정지(self):
         if self.playing:
             self.stoping = True
