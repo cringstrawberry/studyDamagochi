@@ -169,7 +169,7 @@ class MakeAnimal:
 
         if os.path.exists(img_path):
             img = Image.open(img_path)
-            img = img.resize((200, 200))
+            img = img.resize((150, 150))
             self.photo = ImageTk.PhotoImage(img)
         else:
             messagebox.showerror("오류", f"이미지가 존재하지 않아요. {img_path}")

@@ -25,7 +25,7 @@ class LevelUp:
                 current_big = self.study_frame.image_size
 
                 # 경험치 증가
-                current_exp += studytime * 1  # 1분에 1% 경험치 증가
+                current_exp += studytime * 100  # 1분에 1% 경험치 증가
 
                 # 레벨업 처리
                 while current_exp >= 100:
